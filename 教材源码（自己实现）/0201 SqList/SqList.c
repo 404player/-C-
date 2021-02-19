@@ -153,3 +153,82 @@ Status NextElem(SqList L, ElemType cur_e, ElemType* next_e)
     return OK;
 }
 
+/* ============================================ **
+**                     插入元素                 **
+**             向顺序表第i个元素插入元素e       **
+**                 插入成功则返回OK             **
+**                  否则返回ERROR               **
+** ============================================= */
+
+Status ListInsert(SqList* L, int i, ElemType e)
+{
+    ElemType* newbase;
+    ElemType* p, * q;
+
+    if(L == NULL || (*L).elem == NULL) return ERROR; //判断顺序表结构是否存在
+
+    if(i < 1 || i > (*L).length + 1) return ERROR; //判断i是否合法
+
+    //若存储空间已满，基于现有空间扩容
+    if((*L).length >= ListInitSize)
+    {
+        newbase = (ElemType*) realloc((*L).elem, ((*L).length + LISTINCREMENT) * sizeof(ElemType));
+        if(newbase == NULL) exit(OVERFLOW);
+
+        (*L).elem = newbase;
+        (*L).listsize += LISTINCREMENT;
+
+    }
+
+    q = &(*L).elem[i - 1];
+
+    for(p = &(*L).elem[(*L).length - 1]; p >= q; p --) *(p + 1) = *p;
+
+    //插入e
+    *q = e;
+
+    //顺序表长度加1
+    (*L).length ++;
+
+    return OK;
+}
+
+/* ============================================ **
+**                     删除元素                 **
+**             向顺序表第i个元素删除元素e       **
+**    删除成功则返回OK，并将删除元素存储到e中   **
+**                  否则返回ERROR               **
+** ============================================= */
+
+Status ListDelete(SqList* L, int i, ElemType* e)
+{
+    ElemType* p, * q;
+
+    if(L == NULL || (*L).elem == NULL) return ERROR;//  确定顺序表是否存在
+
+    if(i < 1 || i > (*L).length) return ERROR;
+
+    p = &(*L).elem[i - 1]; //找到要删除的元素
+    *e = *p; //将元素存储在e中
+
+    q = (*L).elem + (*L).length - 1;
+
+    for(++ p; p <= q; p ++) *(p -  1) = *p;
+
+    (*L).length --;
+
+    return OK;
+}
+
+Status ListDelete(SqList* L, int i, ElemType* e);
+
+/* ============================================ **
+**                     遍历                     **
+**          用Visit函数访问顺序表               **
+** ============================================= */
+
+void TraverseList(SqList L, void(Visit)(ElemType))
+{
+    for(int i = 0; i < L.length; i ++) Visit(L.elem[i]);
+    printf("\n");
+}

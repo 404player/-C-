@@ -17,6 +17,7 @@
 **       宏定义         **
 **======================*/
 #define ListInitSize  10000
+#define LISTINCREMENT 100
 
 
 /*   顺序表数据元素类型定义 */
