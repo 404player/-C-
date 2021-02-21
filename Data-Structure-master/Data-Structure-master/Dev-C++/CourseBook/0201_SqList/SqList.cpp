@@ -132,7 +132,7 @@ int LocateElem(SqList L, ElemType e, Status(Compare)(ElemType, ElemType)) {
 
     /*
      * i的初值为第1个元素的位序
-     *
+     * 
      * 其实，更自然的写法是将i初始化为第1个元素的索引
      * 但由于教材中是按位序计数的，所以这里仍写作位序
      */
